@@ -32,6 +32,8 @@ namespace OwinSelfHosted
 
         static void Startup(IAppBuilder app)
         {
+            app.UseErrorPage();
+
             app.Use(new Func<AppFunc, AppFunc>(LoggingMiddleware));
 
             app.Use(typeof(StartPageMiddleware));
