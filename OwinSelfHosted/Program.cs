@@ -35,6 +35,15 @@ namespace OwinSelfHosted
             app.Use(new Func<AppFunc, AppFunc>(LoggingMiddleware));
 
             app.Use(typeof(StartPageMiddleware));
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == new PathString("/Fail"))
+                {
+                    throw new InvalidOperationException();
+                }
+                await next.Invoke();
+            });
         }
 
         static AppFunc LoggingMiddleware(AppFunc next)
