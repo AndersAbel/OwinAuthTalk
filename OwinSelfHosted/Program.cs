@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace OwinSelfHosted
 {
@@ -14,7 +15,7 @@ namespace OwinSelfHosted
         {
             string url = "http://localhost:12345";
             Console.WriteLine("Starting web application...");
-            using(WebApp.Start(url, Startup))
+            using (WebApp.Start(url, Startup))
             {
                 Console.WriteLine("Application listening on {0}.", url);
                 Console.WriteLine("Press any key to quit.");
@@ -28,7 +29,7 @@ namespace OwinSelfHosted
 
         static void Startup(IAppBuilder app)
         {
-
+            app.Use(typeof(StartPageMiddleware));
         }
     }
 }
