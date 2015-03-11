@@ -6,9 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Owin;
 
 namespace OwinSelfHosted
 {
+    using AppFunc = Func<IDictionary<string, object>, Task>;
+
     class Program
     {
         static void Main(string[] args)
@@ -29,7 +32,21 @@ namespace OwinSelfHosted
 
         static void Startup(IAppBuilder app)
         {
+            app.Use(new Func<AppFunc, AppFunc>(LoggingMiddleware));
+
             app.Use(typeof(StartPageMiddleware));
+        }
+
+        static AppFunc LoggingMiddleware(AppFunc next)
+        {
+            return async environment =>
+                {
+                    Console.WriteLine("Receiving request for \"{0}\"", environment["owin.RequestPath"]);
+
+                    await next.Invoke(environment);
+
+                    Console.WriteLine("Returning with status {0}", environment["owin.ResponseStatusCode"]);
+                };
         }
     }
 }
