@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DummyOwinAuth">
+      <HintPath>..\..\spikes\DummyOwinAuth\DummyOwinAuth\bin\Debug\DummyOwinAuth.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />

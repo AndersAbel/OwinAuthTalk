@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using MVCApplication.Models;
+using DummyOwinAuth;
 
 namespace MVCApplication
 {
@@ -48,6 +49,11 @@ namespace MVCApplication
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
+            app.Use(async (ctx, next) =>
+            {
+                await next.Invoke();
+            });
+
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
 
@@ -74,6 +80,13 @@ namespace MVCApplication
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+
+            app.UseDummyAuthentication(new DummyAuthenticationOptions("anders.abel@kentor.se", "1"));
+
+            app.Use(async (ctx, next) =>
+            {
+                await next.Invoke();
+            });
         }
     }
 }
